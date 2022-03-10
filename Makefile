@@ -6,7 +6,7 @@
 #    By: mmizuno <mmizuno@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/30 23:12:52 by mmizuno           #+#    #+#              #
-#    Updated: 2022/03/10 13:20:49 by mmizuno          ###   ########.fr        #
+#    Updated: 2022/03/11 06:50:34 by mmizuno          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,7 @@ ESC_CLR_PINK		= \033[38;5;213m
 
 # --------------------------------- $(NAME) ---------------------------------- #
 
-$(NAME):
+$(NAME):			$(OBJS)
 					$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 					@echo "$(ESC_FNT_BOLD)$(ESC_CLR_GREEN)[ $(NAME) successfully compiled !! ]$(ESC_RESET)"
 
@@ -71,7 +71,7 @@ all:				$(NAME)
 
 # ---------------------------------- bonus ----------------------------------- #
 
-bonus:
+bonus:				$(OBJS_BONUS)
 					$(CC) $(CFLAGS) $(OBJS_BONUS) -o $(NAME_BONUS)
 					@echo "$(ESC_FNT_BOLD)$(ESC_CLR_GREEN)[ $(NAME) successfully compiled !! ]$(ESC_RESET)"
 
