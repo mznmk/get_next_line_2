@@ -6,7 +6,7 @@
 /*   By: mmizuno <mmizuno@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:01:37 by mmizuno           #+#    #+#             */
-/*   Updated: 2022/03/11 06:51:20 by mmizuno          ###   ########.fr       */
+/*   Updated: 2022/03/11 10:20:26 by mmizuno          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 // ================================= const ================================== //
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE	10
+#  define BUFFER_SIZE	76
 # endif
 # ifndef MAX_FD
 #  define MAX_FD		1024
@@ -33,19 +33,12 @@
 
 # include <stdio.h>			// for debug
 
-// // ================================= struct ================================= //
-
-// typedef struct	s_lines
-// {
-// 	char	*line;
-// 	char	*buff;
-// }				t_lines;
-
 
 // ========================= prototype declaration ========================== //
 
 // get_next_line_util.c
 char	*allocate_memory(int size);
+char	*deallocate_memory(char **memory);
 long	ft_strlen(const char *s);
 long	find_index(const char *s, char c);
 char	*ft_substr(char *s, long start, long len);

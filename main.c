@@ -6,7 +6,7 @@
 /*   By: mmizuno <mmizuno@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:55:24 by mmizuno           #+#    #+#             */
-/*   Updated: 2022/03/11 06:54:33 by mmizuno          ###   ########.fr       */
+/*   Updated: 2022/03/11 08:41:57 by mmizuno          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,30 +24,34 @@ int	main(int argc, char **argv)
 
 	// [ execute test ]
 	printf("BUFFER_SIZE = %d\n", BUFFER_SIZE);
+	// read from stdin
 	if (argc == 1)
 	{
+		while (42)
+		{
 		// read from stdin
-		line = get_next_line(0);
-		// print read line
-		printf("STDIN|   0|%p|%s\n", line, line);
-		// deallocated memory
-		if (line)
-			free(line);
+			line = get_next_line(0);
+			// print read line
+			printf("STDIN|   0|%14p|%s\n", line, line);
+			// deallocate memory
+			if (line)
+				free(line);
+			else
+				break;
+		}
 	}
+	// read from file
 	else if (argc == 2)
 	{
-		int i = 15;
 		fd = open(argv[1], O_RDONLY);
-		// while (42)
-		while (i--)
+		while (42)
 		{
 			line = get_next_line(fd);
-			printf("FILE|%4d|%p|%s\n", fd, line, line);
-			if (line == NULL)
+			printf("FILE|%4d|%14p|%s\n", fd, line, line);
+			if (!line)
 				break;
 			else {
 				free(line);
-				line = NULL;
 			}
 		}
 		close(fd);

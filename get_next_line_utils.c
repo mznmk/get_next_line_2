@@ -6,7 +6,7 @@
 /*   By: mmizuno <mmizuno@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 17:14:28 by mmizuno           #+#    #+#             */
-/*   Updated: 2022/03/11 06:18:00 by mmizuno          ###   ########.fr       */
+/*   Updated: 2022/03/11 10:20:15 by mmizuno          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,14 @@ char	*allocate_memory(int size)
 	while (size--)
 		memory[size] = '\0';
 	return memory;
+}
+
+char	*deallocate_memory(char **memory)
+{
+	if (*memory)
+		free(*memory);
+	*memory = NULL;
+	return (NULL);
 }
 
 long	ft_strlen(const char *s)

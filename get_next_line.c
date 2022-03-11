@@ -6,11 +6,27 @@
 /*   By: mmizuno <mmizuno@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:01:48 by mmizuno           #+#    #+#             */
-/*   Updated: 2022/03/11 06:22:08 by mmizuno          ###   ########.fr       */
+/*   Updated: 2022/03/11 10:27:00 by mmizuno          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+char	*validate_buffer(char *buff)
+{
+	long	length;
+	// long	rtnpos;
+
+	if (!buff)
+		return (NULL);
+	length = ft_strlen(buff);
+	if (!length)
+		return(deallocate_memory(&buff));
+	if (buff[length-1] == '\n')
+	// rtnpos = find_index(buff, '\n');
+		buff[length-1] = '\0';
+	return (buff);	
+}
 
 char	*join_buffer(char *buff1, char*buff2)
 {
@@ -31,7 +47,7 @@ char	*join_buffer(char *buff1, char*buff2)
 	while (buff2[++i])
 		buff[len1+i] = buff2[i];
 
-	free(buff1);
+	deallocate_memory(&buff1);
 
 	return buff;
 }
@@ -41,33 +57,26 @@ char	*split_buffer(char **buff)
 	char	*newline;
 	char	*newbuff;
 	long	index;
-	char	*temp;
+
 	if (!*buff)
 		return (NULL);
 	index = find_index(*buff, '\n');
-// printf("index:%ld\n", index);
 	if (index < 0)
 	{
-// printf("ahoaho\n");
 		newline = ft_substr(*buff, 0, ft_strlen(*buff));
 		newbuff = allocate_memory(0);
-// printf("newline:%s\n", newline);
-// printf("newbuff:%s\n", newbuff);
 	}
 	else
 	{
-// printf("bokeboke\n");
-		newline = ft_substr(*buff, 0, index);
+		newline = ft_substr(*buff, 0, index + 1);
 		newbuff = ft_substr(*buff, index + 1, ft_strlen(*buff) - (index + 1));
-// printf("newline:%s\n", newline);
-// printf("newbuff:%s\n", newbuff);
 	}
-	free(*buff);
+	deallocate_memory(buff);
 	*buff = newbuff;
 	return (newline);
 }
 
-char	*read_buffer(int fd, char *buff)
+char	*append_buffer(int fd, char *buff)
 {
 	long	status;
 	char	*temp;
@@ -80,21 +89,13 @@ char	*read_buffer(int fd, char *buff)
 	{
 		status = read(fd, temp, BUFFER_SIZE);
 		if (status < -1)
-		{
-			free(temp);
-			return (NULL);
-		}
+			return (deallocate_memory(&temp));
 		temp[status] = '\0';
 		buff = join_buffer(buff, temp);
 		if (!buff)
-		{
-			free(temp);
-			return (NULL);
-		}
+			return (deallocate_memory(&temp));
 	}
-// printf("buff:%s\n", buff);
-// printf("temp:%s\n", temp);
-	free(temp);
+	deallocate_memory(&temp);
 	return (buff);
 }
 
@@ -113,11 +114,13 @@ char	*get_next_line(int fd)
 	if (!buff)
 		return (NULL);
 	// read & join buffer
-	buff = read_buffer(fd, buff);
+	buff = append_buffer(fd, buff);
 	if (!buff)
 		return (NULL);
 	// split into line & buffer
 	line = split_buffer(&buff);
+	// validate buffer
+	line = validate_buffer(line);
 	// return
 	return line;	
 }
