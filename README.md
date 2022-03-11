@@ -1,6 +1,9 @@
 # get_next_line
 
 
+[![](https://img.youtube.com/vi/a9_48VPRwqc/0.jpg)](https://www.youtube.com/watch?v=a9_48VPRwqc)
+
+
 ![jaeskim's 42Project Score](https://badge42.herokuapp.com/api/project/mmizuno/get_next_line)  
 
 Reading a line on a fd is way too tedious  
