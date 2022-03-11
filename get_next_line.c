@@ -6,7 +6,7 @@
 /*   By: mmizuno <mmizuno@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:01:48 by mmizuno           #+#    #+#             */
-/*   Updated: 2022/03/11 10:27:00 by mmizuno          ###   ########.fr       */
+/*   Updated: 2022/03/11 11:21:39 by mmizuno          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,16 @@
 
 char	*validate_buffer(char *buff)
 {
-	long	length;
-	// long	rtnpos;
+	long	len;
 
 	if (!buff)
 		return (NULL);
-	length = ft_strlen(buff);
-	if (!length)
-		return(deallocate_memory(&buff));
-	if (buff[length-1] == '\n')
-	// rtnpos = find_index(buff, '\n');
-		buff[length-1] = '\0';
-	return (buff);	
+	len = ft_strlen(buff);
+	if (!len)
+		return (deallocate_memory(&buff));
+	if (buff[len - 1] == '\n')
+		buff[len - 1] = '\0';
+	return (buff);
 }
 
 char	*join_buffer(char *buff1, char*buff2)
@@ -45,11 +43,9 @@ char	*join_buffer(char *buff1, char*buff2)
 		buff[i] = buff1[i];
 	i = -1;
 	while (buff2[++i])
-		buff[len1+i] = buff2[i];
-
+		buff[len1 + i] = buff2[i];
 	deallocate_memory(&buff1);
-
-	return buff;
+	return (buff);
 }
 
 char	*split_buffer(char **buff)
@@ -99,28 +95,21 @@ char	*append_buffer(int fd, char *buff)
 	return (buff);
 }
 
-
 char	*get_next_line(int fd)
 {
 	char		*line;
 	static char	*buff;
 
-	// treat error
 	if (fd < 0 || BUFFER_SIZE < 1)
-		return NULL;
-	// allocate memory
+		return (NULL);
 	if (!buff)
 		buff = allocate_memory(0);
 	if (!buff)
 		return (NULL);
-	// read & join buffer
 	buff = append_buffer(fd, buff);
 	if (!buff)
 		return (NULL);
-	// split into line & buffer
 	line = split_buffer(&buff);
-	// validate buffer
 	line = validate_buffer(line);
-	// return
-	return line;	
+	return (line);
 }
