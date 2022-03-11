@@ -6,7 +6,7 @@
 /*   By: mmizuno <mmizuno@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:01:37 by mmizuno           #+#    #+#             */
-/*   Updated: 2022/03/11 11:12:40 by mmizuno          ###   ########.fr       */
+/*   Updated: 2022/03/11 12:14:07 by mmizuno          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE	32
 # endif
-# ifndef MAX_FD
-#  define MAX_FD		1024
+# ifndef FD_MAX
+#  define FD_MAX		1024
 # endif
+# define FD_NOTUSE		2
 
 // ================================ library ================================= //
 

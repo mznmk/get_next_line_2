@@ -6,13 +6,13 @@
 /*   By: mmizuno <mmizuno@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:01:48 by mmizuno           #+#    #+#             */
-/*   Updated: 2022/03/11 11:21:39 by mmizuno          ###   ########.fr       */
+/*   Updated: 2022/03/11 12:09:59 by mmizuno          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*validate_buffer(char *buff)
+static char	*validate_buffer(char *buff)
 {
 	long	len;
 
@@ -26,29 +26,7 @@ char	*validate_buffer(char *buff)
 	return (buff);
 }
 
-char	*join_buffer(char *buff1, char*buff2)
-{
-	char	*buff;
-	long	len1;
-	long	len2;
-	int		i;
-
-	len1 = ft_strlen(buff1);
-	len2 = ft_strlen(buff2);
-	buff = allocate_memory(len1 + len2);
-	if (!buff)
-		return (NULL);
-	i = -1;
-	while (buff1[++i])
-		buff[i] = buff1[i];
-	i = -1;
-	while (buff2[++i])
-		buff[len1 + i] = buff2[i];
-	deallocate_memory(&buff1);
-	return (buff);
-}
-
-char	*split_buffer(char **buff)
+static char	*split_buffer(char **buff)
 {
 	char	*newline;
 	char	*newbuff;
@@ -72,7 +50,29 @@ char	*split_buffer(char **buff)
 	return (newline);
 }
 
-char	*append_buffer(int fd, char *buff)
+static char	*join_buffer(char *buff1, char*buff2)
+{
+	char	*buff;
+	long	len1;
+	long	len2;
+	int		i;
+
+	len1 = ft_strlen(buff1);
+	len2 = ft_strlen(buff2);
+	buff = allocate_memory(len1 + len2);
+	if (!buff)
+		return (NULL);
+	i = -1;
+	while (buff1[++i])
+		buff[i] = buff1[i];
+	i = -1;
+	while (buff2[++i])
+		buff[len1 + i] = buff2[i];
+	deallocate_memory(&buff1);
+	return (buff);
+}
+
+static char	*append_buffer(int fd, char *buff)
 {
 	long	status;
 	char	*temp;
@@ -98,18 +98,23 @@ char	*append_buffer(int fd, char *buff)
 char	*get_next_line(int fd)
 {
 	char		*line;
-	static char	*buff;
+	static char	*buffs[FD_MAX - FD_NOTUSE];
+	int			index;
 
-	if (fd < 0 || BUFFER_SIZE < 1)
+	if (fd)
+		index = fd - FD_NOTUSE;
+	else
+		index = 0;
+	if (fd < 0 || FD_MAX < fd || BUFFER_SIZE < 1)
 		return (NULL);
-	if (!buff)
-		buff = allocate_memory(0);
-	if (!buff)
+	if (!buffs[index])
+		buffs[index] = allocate_memory(0);
+	if (!buffs[index])
 		return (NULL);
-	buff = append_buffer(fd, buff);
-	if (!buff)
+	buffs[index] = append_buffer(fd, buffs[index]);
+	if (!buffs[index])
 		return (NULL);
-	line = split_buffer(&buff);
+	line = split_buffer(&buffs[index]);
 	line = validate_buffer(line);
 	return (line);
 }
